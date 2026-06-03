@@ -1,0 +1,60 @@
+{
+  "captured": "2026-06-04",
+  "system": {
+    "manufacturer": "Microsoft Corporation",
+    "model": "Surface Pro 9",
+    "sku": "Surface Pro 9 for Business (2038)",
+    "family": "Surface",
+    "serial": "0F017YC23333BF",
+    "uuid": "3E7A8D8F-AE27-126C-6A4F-431B9F141AA3",
+    "bios_version": "23.102.143",
+    "bios_date": "2025-11-25"
+  },
+  "cpu": {
+    "name": "12th Gen Intel Core i7-1265U",
+    "cores": 10,
+    "threads": 12,
+    "vendor": "GenuineIntel"
+  },
+  "memory_gb": 16,
+  "storage": {
+    "model": "WD_BLACK SN770M 1TB",
+    "size_bytes": 1000202273280,
+    "interface": "NVMe"
+  },
+  "graphics": {
+    "name": "Intel Iris Xe Graphics",
+    "pci": "8086:46A8"
+  },
+  "network": {
+    "wifi": "Intel Wi-Fi 6E AX211 160MHz",
+    "wifi_pci": "8086:51F0",
+    "bluetooth": "Intel Wireless Bluetooth (8087:0033)"
+  },
+  "surface_specific": {
+    "touch": "Intel Precise Touch and Stylus (PTS) 8086:51D0",
+    "pen": "Surface Slim Pen 2 (BLE)",
+    "sam_kip": ["Surface Aggregator (SAM)", "Surface Hot Plug KIP"],
+    "cameras": ["Surface Camera Front OVTI5693", "Surface Camera Rear OVTID858", "Surface IR Camera SMO55F0", "Intel ADL AVStream"],
+    "audio": "Realtek / Surface High Definition Audio (10EC:0274)",
+    "display_panel": "Surface Calibrated Panel LGD0719",
+    "firmware": ["Surface System Aggregator", "Surface PD Controller", "Surface ME", "Surface TCON"]
+  },
+  "linux_surface": {
+    "device_listed": true,
+    "repo": "https://github.com/linux-surface/linux-surface",
+    "packages_fedora_atomic": [
+      "kernel-surface",
+      "kernel-surface-silverblue",
+      "iptsd",
+      "libwacom-surface",
+      "surface-secureboot"
+    ],
+    "repo_url": "https://pkg.surfacelinux.com/fedora/linux-surface.repo"
+  },
+  "bazzite_recommendation": {
+    "variant": "bazzite (desktop, Intel — not nvidia)",
+    "iso": "https://download.bazzite.gg/",
+    "docs": "https://docs.bazzite.gg/General/Installation_Guide/"
+  }
+}

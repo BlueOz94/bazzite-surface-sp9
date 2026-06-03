@@ -1,0 +1,12 @@
+[Unit]
+Description=Surface Pro first-boot touch and pen setup
+After=multi-user.target
+ConditionPathExists=!/var/lib/bazzite-surface-firstboot.done
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/bazzite-surface-firstboot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

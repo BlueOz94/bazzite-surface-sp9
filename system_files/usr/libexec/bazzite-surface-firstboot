@@ -1,0 +1,19 @@
+#!/bin/bash
+# One-time Surface Pro 9 setup after install (stock Bazzite or custom image)
+set -euo pipefail
+MARKER="/var/lib/bazzite-surface-firstboot.done"
+[[ -f "$MARKER" ]] && exit 0
+
+if ! rpm -q kernel-surface &>/dev/null; then
+  echo "linux-surface packages not installed; run install-surface-stack.sh"
+  exit 0
+fi
+
+systemctl enable --now iptsd.service 2>/dev/null || true
+for u in /dev/iptsd/*/; do
+  [[ -d "$u" ]] || continue
+  systemctl enable --now "iptsd@$(basename "$u").service" 2>/dev/null || true
+done
+
+touch "$MARKER"
+echo "Surface first-boot configuration complete."

@@ -1,0 +1,4 @@
+cosign.key
+*.iso
+.DS_Store
+Thumbs.db
