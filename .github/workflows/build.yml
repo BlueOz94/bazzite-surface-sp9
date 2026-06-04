@@ -94,8 +94,12 @@ jobs:
         if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
 
       - name: Sign container image
-        if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && secrets.SIGNING_SECRET != ''
+        if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
         run: |
+          if [ -z "${COSIGN_PRIVATE_KEY:-}" ]; then
+            echo "No SIGNING_SECRET repo secret set - skipping cosign (image still builds and pushes)."
+            exit 0
+          fi
           IMAGE_FULL="${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}"
           for tag in ${{ steps.metadata.outputs.tags }}; do
             cosign sign -y --key env://COSIGN_PRIVATE_KEY "$IMAGE_FULL:$tag"
