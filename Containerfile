@@ -10,8 +10,10 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
-    /ctx/build.sh && \
-    /ctx/cleanup.sh && \
+    sed -i 's/\r$//' /ctx/build.sh /ctx/cleanup.sh && \
+    chmod +x /ctx/build.sh /ctx/cleanup.sh && \
+    bash /ctx/build.sh && \
+    bash /ctx/cleanup.sh && \
     ostree container commit
 
 RUN bootc container lint
