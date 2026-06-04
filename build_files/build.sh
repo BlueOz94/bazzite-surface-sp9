@@ -1,30 +1,32 @@
 #!/bin/bash
-# Bazzite + linux-surface for Surface Pro 9 (Intel)
-set -eux
+# Surface Pro 9 customizations — follows ublue-os/image-template build.sh pattern
+set -ouex pipefail
 
-# Merge system_files overlay (repo, firstboot unit, scripts)
 if [[ -d /ctx/files ]]; then
-  find /ctx/files -type f -exec sed -i 's/\r$//' {} +
+  find /ctx/files -type f -exec sed -i 's/\r$//' {} + 2>/dev/null || true
   cp -a /ctx/files/. /
   chmod +x /usr/libexec/bazzite-surface-firstboot
-  systemctl enable bazzite-surface-firstboot.service
+  systemctl enable bazzite-surface-firstboot.service || true
 fi
 
-SURFACE_REPO="https://pkg.surfacelinux.com/fedora/linux-surface.repo"
+# linux-surface repo is shipped in system_files (enabled=0). Enable only for install.
+dnf5 -y config-manager setopt linux-surface.enabled=1
 
-dnf5 -y config-manager addrepo --overwrite --from-repofile="${SURFACE_REPO}"
+SURFACE_PACKAGES=(
+  iptsd
+  libwacom-surface
+  libcamera
+  surface-secureboot
+)
 
-# linux-surface stack for Surface Pro 9 (touch, pen, SAM, cameras)
-dnf5 -y install --allowerasing \
-  kernel-surface \
-  kernel-surface-silverblue \
-  iptsd \
-  libwacom-surface \
-  libcamera \
-  surface-secureboot \
-  surface-control \
-  intel-microcode
+if dnf5 -y install "${SURFACE_PACKAGES[@]}"; then
+  systemctl enable iptsd.service || true
+  echo "linux-surface userspace packages installed in image"
+else
+  echo "WARN: Could not install linux-surface RPMs during image build."
+  echo "      Install after boot: scripts/install-surface-stack.sh"
+  echo "      (common when Bazzite Fedora release != linux-surface repo)"
+fi
 
-systemctl enable iptsd.service || true
-
-dnf5 -y config-manager setopt linux-surface.enabled=0
+dnf5 -y config-manager setopt linux-surface.enabled=0 || true
+/ctx/cleanup.sh

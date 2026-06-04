@@ -10,6 +10,10 @@ on:
     paths-ignore:
       - '**/README.md'
       - 'windows/**'
+      - 'INSTALL*.md'
+      - '*.txt'
+      - '*.cmd'
+      - '*.url'
   workflow_dispatch:
 
 env:
@@ -38,6 +42,9 @@ jobs:
           echo "IMAGE_NAME=${IMAGE_NAME,,}" >> ${GITHUB_ENV}
 
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+
+      - name: Maximize build space
+        uses: ublue-os/remove-unwanted-software@695eb75bc387dbcd9685a8e72d23439d8686cba6
 
       - name: Normalize shell script line endings
         run: |
@@ -102,7 +109,7 @@ jobs:
         if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
         run: |
           if [ -z "${COSIGN_PRIVATE_KEY:-}" ]; then
-            echo "No SIGNING_SECRET repo secret set - skipping cosign (image still builds and pushes)."
+            echo "No SIGNING_SECRET — skipping cosign (image still publishes)."
             exit 0
           fi
           IMAGE_FULL="${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}"

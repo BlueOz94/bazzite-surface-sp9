@@ -37,10 +37,11 @@ cd $env:USERPROFILE\bazzite-surface-sp9\windows
 
 ### After first boot (pick one)
 
-**A — Custom image** (after you push to GitHub and CI builds):
+**A — Custom image** (after GitHub Actions build completes):
 
 ```bash
-./scripts/rebase-to-custom-image.sh YOUR_GITHUB_USER
+./scripts/rebase-to-custom-image.sh BlueOz94
+# Image: ghcr.io/blueoz94/bazzite-surface-sp9:stable
 ```
 
 **B — Stock Bazzite + script** (works immediately):
@@ -49,14 +50,15 @@ cd $env:USERPROFILE\bazzite-surface-sp9\windows
 sudo ./scripts/install-surface-stack.sh
 ```
 
-## Build your own image (GitHub)
+## Build your own image (official uBlue way)
 
-1. Create repo `bazzite-surface-sp9`, push this folder
-2. Enable GitHub Actions
-3. Optional: `cosign generate-key-pair`, add private key as `SIGNING_SECRET`, commit `cosign.pub`
-4. Workflow publishes `ghcr.io/YOU/bazzite-surface-sp9:stable`
+This repo follows [ublue-os/image-template](https://github.com/ublue-os/image-template): **FROM** `ghcr.io/ublue-os/bazzite:stable`, customize in `build_files/build.sh`, CI publishes to GHCR. You do **not** need to fork Bazzite itself.
 
-Local build requires Linux + buildah (same as upstream BlueBuild images).
+See **[BUILD-YOUR-OWN.md](./BUILD-YOUR-OWN.md)** for setup, cosign, and `bootc switch`.
+
+1. Repo: https://github.com/BlueOz94/bazzite-surface-sp9
+2. Actions → **Build Bazzite Surface SP9 image** (wait ~30–60 min; do not push several commits in a row)
+3. Image: `ghcr.io/blueoz94/bazzite-surface-sp9:stable`
 
 ## Device profile
 
